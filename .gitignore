@@ -1,1 +1,17 @@
 *.save
+# Editor backup files
+*.save
+*.swp
+
+# Cloud credentials: never commit
+.aws/
+.azure/
+credentials
+*credentials*.csv
+*accessKeys*.csv
+*.pem
+*.key
+
+# Kubernetes credentials
+kubeconfig
+*.kubeconfig
