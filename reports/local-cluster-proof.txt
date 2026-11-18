@@ -1,0 +1,61 @@
+==============================================
+ LOCAL CLUSTER PROOF
+ Distribution: K3s (air-gapped install)
+ Date: Tue Nov 17 10:40:43 PM UTC 2026
+==============================================
+
+$ docker run --rm hello-world
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+
+$ systemctl is-active k3s
+active
+
+$ kubectl get nodes -o wide
+NAME   STATUS   ROLES           AGE    VERSION        INTERNAL-IP   EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION             CONTAINER-RUNTIME
+labs   Ready    control-plane   3h8m   v1.37.2+k3s1   172.20.10.4   <none>        Ubuntu 26.04.1 LTS   7.0.0-43-generic (amd64)   containerd://2.3.7-k3s1
+
+$ kubectl get pods -A
+NAMESPACE     NAME                                      READY   STATUS      RESTARTS       AGE
+kube-system   coredns-577d995dff-kbgx5                  1/1     Running     0              3h7m
+kube-system   helm-install-gateway-api-crd-d8glw        0/1     Completed   0              3h7m
+kube-system   helm-install-traefik-8vc8r                0/1     Completed   2 (175m ago)   3h7m
+kube-system   helm-install-traefik-crd-qkst8            0/1     Completed   0              3h7m
+kube-system   local-path-provisioner-56c6584955-xsq44   1/1     Running     0              3h7m
+kube-system   metrics-server-778c4649b4-7tmbd           1/1     Running     0              3h7m
+kube-system   svclb-traefik-32488fdc-hkbdr              2/2     Running     0              174m
+kube-system   traefik-68df944ff7-nspk9                  1/1     Running     0              174m
+
+$ kubectl cluster-info
+Kubernetes control plane is running at https://127.0.0.1:6443
+CoreDNS is running at https://127.0.0.1:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+Metrics-server is running at https://127.0.0.1:6443/api/v1/namespaces/kube-system/services/https:metrics-server:https/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+
+$ helm list -A
+NAME           	NAMESPACE  	REVISION	UPDATED                                	STATUS  	CHART                        	APP VERSION
+gateway-api-crd	kube-system	1       	2026-11-17 19:45:18.742066871 +0000 UTC	deployed	gateway-api-crd-1.6.301      	v1.6.3     
+traefik        	kube-system	1       	2026-11-17 19:46:06.774544085 +0000 UTC	deployed	traefik-41.6.101+up41.6.1    	v3.7.13    
+traefik-crd    	kube-system	1       	2026-11-17 19:45:16.877456562 +0000 UTC	deployed	traefik-crd-41.6.101+up41.6.1	v3.7.1     
+

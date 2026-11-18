@@ -1,0 +1,91 @@
+==============================================
+ TOOLING VERIFICATION REPORT
+ User: ifeanyi   Host: labs
+ Date: Tue Nov 17 10:39:57 PM UTC 2026
+==============================================
+
+---- System ----
+$ lsb_release -a
+Distributor ID:	Ubuntu
+Description:	Ubuntu 26.04.1 LTS
+Release:	26.04
+Codename:	resolute
+
+$ uname -srm
+Linux 7.0.0-43-generic x86_64
+
+CPUs: 5
+
+               total        used        free      shared  buff/cache   available
+Mem:           4.9Gi       1.3Gi       147Mi       2.6Mi       3.7Gi       3.6Gi
+Swap:             0B          0B          0B
+
+Filesystem                         Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv   12G  8.8G  1.9G  83% /
+
+---- Version control ----
+$ git --version
+git version 2.53.0
+
+Git user : Ifeanyi Duru
+Git email: ifeanyiduru98@gmail.com
+
+---- Containers & Kubernetes ----
+$ docker --version
+Docker version 29.9.3, build 5457199
+
+$ kubectl version
+Client Version: v1.37.2
+Kustomize Version: v5.8.1
+Server Version: v1.37.2+k3s1
+
+$ k3s --version
+k3s version v1.37.2+k3s1 (f6973cb8)
+go version go1.26.10
+
+$ helm version
+version.BuildInfo{Version:"v4.3.2", GitCommit:"8346aaa55e7161f7c547212d0a87f01367976727", GitTreeState:"clean", GoVersion:"go1.27.4", KubeClientVersion:"v1.37"}
+
+$ minikube version
+minikube version: v1.39.0
+commit: 7a9f6a841470a207de8cf4bafcccee0969d8ba10
+
+---- Cloud CLIs ----
+$ aws --version
+aws-cli/2.40.2 Python/3.14.8 Linux/7.0.0-43-generic exe/x86_64.ubuntu.26
+
+$ az version
+{
+  "azure-cli": "2.93.0",
+  "azure-cli-core": "2.93.0",
+  "azure-cli-telemetry": "1.1.0",
+  "extensions": {}
+}
+
+---- Runtime & utilities ----
+$ node -v
+v24.22.3
+
+$ npm -v
+11.19.1
+
+$ jq --version
+jq-1.8.1
+
+---- Infrastructure as Code & configuration management ----
+$ terraform version
+Terraform v1.17.2
+on linux_amd64
+
+
+$ ansible --version
+ansible [core 2.20.1]
+  config file = None
+  configured module search path = ['/home/ifeanyi/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3/dist-packages/ansible
+  ansible collection location = /home/ifeanyi/.ansible/collections:/usr/share/ansible/collections
+  executable location = /usr/bin/ansible
+  python version = 3.14.4 (main, Aug 20 2026, 10:41:58) [GCC 15.2.0] (/usr/bin/python3)
+  jinja version = 3.1.6
+  pyyaml version = 6.0.3 (with libyaml v0.2.5)
+
