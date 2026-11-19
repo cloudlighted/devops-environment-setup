@@ -1,4 +1,4 @@
-# DevOps Environment Setup: Setup Logic Documentation
+# DevOps Engineer Local Environment Setup: Git, VS Code, GitHub, AWS, Azure, AWS CLI, Azure CLI# DevOps Environment Setup: Setup Logic Documentation
 
 **Author:** Ifeanyi Mathew Duru
 **Host:** Windows laptop running Oracle VirtualBox
@@ -20,6 +20,8 @@ The VM's network connection inside VirtualBox was unreliable for large downloads
 
 | Tool | Version | Purpose | Installed with |
 |---|---|---|---|
+| VS Code | <1.147.0> | IDE (on host laptop), connected to the VM via Remote-SSH | Official Windows installer from code.visualstudio.com |
+| GitHub | – | Remote Git hosting | Account with SSH key authentication from the VM |
 | Git | <2.53.0> | Version control | `apt` |
 | Docker Engine | 29.9.3 | Container runtime | `apt` (Docker's official repository) |
 | kubectl | v1.37.2 | Kubernetes command-line client | Binary downloaded via host browser, SHA-256 verified, `install` to `/usr/local/bin` |
@@ -113,14 +115,66 @@ kubectl get nodes -o wide                                        # labs   Ready 
 - **Choose tools that fit the constraint.** K3s's air-gapped install removed the network dependency entirely, and it still meets the "Minikube or similar local distribution" requirement.
 - `tmux`, `curl -C -`, `--retry` and apt retries make a fragile connection workable.
 
+## 7a. IDE and cloud accounts
+
+### VS Code
+VS Code is installed on the Windows host with DevOps extensions (Remote-SSH, Docker, Kubernetes, HashiCorp Terraform, YAML, AWS Toolkit, Azure). It connects to the Ubuntu VM via **Remote-SSH**, so files on the VM are edited directly. To work around the VM's network limits, `remote.SSH.localServerDownload` was set to `always`: the VS Code Server is downloaded by the host and copied to the VM over SSH.
+
+![VS Code version](screenshots/vscode-about.png)
+![VS Code extensions](screenshots/vscode-extensions.png)
+![VS Code Remote-SSH to VM](screenshots/vscode-remote-ssh.png)
+![code --version](screenshots/vscode-terminal-version.png)
+
+### GitHub
+Signed-in account, and SSH key authentication from the VM (`ssh -T git@github.com`).
+
+![GitHub profile](screenshots/github-profile.png)
+![GitHub repository](screenshots/github-repo.png)
+![GitHub SSH authentication](screenshots/github-ssh-auth.png)
+
+### AWS
+- Root account protected with **MFA**; a **zero-spend budget** alerts on any cost.
+- CLI access uses a dedicated IAM user **`ifeanyi-cli`** with **ReadOnlyAccess** (least privilege; root keys are never used).
+- Credentials are stored in `~/.aws/credentials` (permissions `600`) and are excluded from Git via `.gitignore`.
+- Verified with `aws sts get-caller-identity`.
+
+![AWS Console](screenshots/aws-console.png)
+![IAM least-privilege user](screenshots/aws-iam-user.png)
+![AWS CLI identity](screenshots/aws-cli-identity.png)
+
+### Azure
+Signed in to the Azure Portal. The CLI is authenticated with `az login --use-device-code` (the VM has no browser, so the code is entered on the host) and verified with `az account show`.
+
+![Azure Portal](screenshots/azure-portal.png)
+![Azure CLI account](screenshots/azure-cli-account.png)
+
+> Account IDs, subscription IDs and emails are partly masked in screenshots. No credentials are stored in this repository.
+
+
+--
+
+
+## 8. Evidence
+
+### Tooling versions
+![Tooling versions](screenshots/tooling-versions.png)
+
+### Local cluster: K3s node Ready
+![K3s node Ready](screenshots/k3s-node-ready.png)
+
+### Course verification script summary
+![Verification summary](screenshots/verify-script-summary.png)
+
 ---
 
-## 8. Submission contents
+## 9. Repository structure
 
-| File | Deliverable |
+| Path | Purpose |
 |---|---|
-| `bashrc.txt` | 1. Environment configuration file |
-| `tooling-verification-report.txt`, `tooling-versions.png` | 2. Tooling verification report |
-| `local-cluster-proof.txt`, `k3s-node-ready.png` | 3. Local cluster proof |
-| `README.md` | 4. Setup logic documentation (this file) |
-| `verify-script-summary.png` | Step 8 verification evidence |
+| [`README.md`](README.md) | Deliverable 4: setup logic documentation (this file) |
+| [`config/.bashrc`](config/.bashrc) | Deliverable 1: environment configuration file |
+| [`reports/tooling-verification-report.txt`](reports/tooling-verification-report.txt) | Deliverable 2: tooling verification report |
+| [`reports/local-cluster-proof.txt`](reports/local-cluster-proof.txt) | Deliverable 3: local cluster proof |
+| [`scripts/collect-evidence.sh`](scripts/collect-evidence.sh) | Script used to generate the reports |
+| [`screenshots/`](screenshots/) | Visual evidence (tooling, cluster, VS Code, GitHub, AWS, Azure) |
+| [`.gitignore`](.gitignore) | Keeps credentials and editor backup files out of Git |
